@@ -295,6 +295,9 @@ fork(void)
 
   np->state = RUNNABLE;
 
+  //set the syscallmask of the child the same as the father 
+  np->syscallmask = p->syscallmask;
+   
   release(&np->lock);
 
   return pid;

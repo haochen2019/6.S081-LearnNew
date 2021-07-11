@@ -35,7 +35,7 @@ w_mstatus(uint64 x)
 static inline void 
 w_mepc(uint64 x)
 {
-  asm volatile("csrw mepc, %0" : : "r" (x));
+  asm volatile("csrw mepc, %0" : : "r" (x));//x -> mepc
 }
 
 // Supervisor Status Register, sstatus
