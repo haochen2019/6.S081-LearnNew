@@ -6,6 +6,10 @@
 #include "memlayout.h"
 #include "spinlock.h"
 #include "proc.h"
+#include "sysinfo.h"
+
+extern uint64 freememnum(void);
+extern uint64 usedpronum(void);
 
 uint64
 sys_exit(void)
@@ -104,5 +108,24 @@ sys_trace(void){
       return -1;
   }
   myproc()-> syscallmask = mask;
+  return 0;
+}
+
+uint64
+sys_sysinfo(void){
+  struct proc *p = myproc();
+  struct sysinfo sys;
+  uint64 st;//
+  //get a user virtual address 
+  if(argaddr(0,&st) < 0)
+    return -1;
+
+  //set struct sysinfo
+  sys.freemem = freememnum() ;
+  sys.nproc = usedpronum();
+
+  if(copyout(p->pagetable, st, (char*)&sys,sizeof(sys)) < 0){
+    return -1;
+  }
   return 0;
 }
